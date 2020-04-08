@@ -56,6 +56,8 @@ When ``main`` is executed, the shared libray is loaded, symbol ``ghdl_main`` is 
 
 * If the shared library is built with :option:`--bind` and :option:`--list-link`, the output from the later can be filtered with tools such as ``sed`` in order to remove the default version script (accomplished in :ghdlsharp:`640`), and make all symbols visible by default. It is also possible to pass an additional script. See description of :option:`--list-link` for further details.
 
+Moreover, in order to build a proper shared library ``-Wl,-shared`` needs to be passed to :option:`-e` (or ``-shared`` if using GCC directly). However, on GNU/linux, both executable binaries and shared libraries use the ELF format. As a result, although hackish, it is possible to load an executable binary dynamically. In this example all cases are tested.
+
 .. HINT::
   When GHDL is configured with ``--default-pic`` explicitly, it uses it implicitly when executing any :option:`-a`, :option:`-e` or :option:`-r` command. Hence, it is not required to provide these arguments (fPIC/PIE) to GHDL. However, these might need to be provided when building C sources with GCC. Otherwise linker errors such as the following are produced:
 
