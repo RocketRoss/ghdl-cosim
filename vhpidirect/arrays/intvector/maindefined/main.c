@@ -6,12 +6,7 @@
 extern int ghdl_main(char argc, char* argv[]);
 
 int main(char argc, char* argv[]){
-	char strIn[3];
-
-	printf("Enter the length of the integer array [1-99]: ");
-	fgets(strIn, 3, stdin);
-	printf("\n");
-	sscanf(strIn, "%d", &arraySize);
+	arraySize = 3;
 
 	intArray = malloc(arraySize*sizeof(int));
 	for(int i = 0; i < arraySize; i++){

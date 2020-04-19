@@ -16,6 +16,12 @@ begin
 		end;
 		attribute foreign of c_intArr_ptr : function is "VHPIDIRECT getIntArr_ptr";
 
+		procedure c_freePointers is
+		begin
+			assert false report "c_freePointers VHPI" severity failure;
+		end;
+		attribute foreign of c_freePointers : procedure is "VHPIDIRECT freePointers";
+
 		variable c_intArr : int_arr_ptr := c_intArr_ptr(g_array_size);
 	begin
 		report "ArraySize Interface Generic: " & integer'image(g_array_size);
@@ -24,7 +30,7 @@ begin
 			report "c_intArr[" & integer'image(i) & "] = " &  integer'image(c_intArr(i));
 		end loop;
 
-		c_intArr := c_intArr_ptr(0);
+		c_freePointers;
 		wait;
 	end process;
 
