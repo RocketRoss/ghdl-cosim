@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Wrapping a simulation (ghdl_main) &mdash; GHDL-cosim latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Linking object files" href="linking.html" />
+    <link rel="prev" title="Type declarations" href="declarations.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logow.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../ci.html">Continuous Integration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">VHPIDIRECT</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="declarations.html">Type declarations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wrapping a simulation (ghdl_main)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linking.html">Linking object files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dynamic.html">Dynamic loading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grt.html">Using GRT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mistakes.html">Common mistakes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">VPI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../vpi/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vpi/examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">VPHI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../vhpi/index.html">Introduction</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GHDL-cosim</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Wrapping a simulation (ghdl_main)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/RocketRoss/ghdl-cosim/blob/rocket-header/doc/vhpidirect/wrapping.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="wrapping-a-simulation-ghdl-main">
+<span id="starting-a-simulation-from-a-foreign-program"></span><span id="cosim-vhpidirect-wrapping"></span><h1>Wrapping a simulation (ghdl_main)<a class="headerlink" href="#wrapping-a-simulation-ghdl-main" title="Permalink to this headline">¶</a></h1>
+<p>You may run your design from an external program. You just have to call
+the <code class="docutils literal notranslate"><span class="pre">ghdl_main</span></code> function which can be defined:</p>
+<p>in C:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span> <span class="kt">int</span> <span class="n">ghdl_main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>in Ada:</p>
+<div class="highlight-Ada notranslate"><div class="highlight"><pre><span></span><span class="kn">with</span> <span class="nn">System</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="kd">function</span> <span class="nf">Ghdl_Main</span> <span class="p">(</span><span class="nv">Argc</span> <span class="p">: </span><span class="nv">Integer</span><span class="p">;</span> <span class="nv">Argv</span> <span class="p">: </span><span class="nv">System</span><span class="p">.</span><span class="nv">Address</span><span class="p">)</span>
+  <span class="kr">return</span> <span class="kt">Integer</span><span class="p">;</span>
+<span class="kr">pragma</span> <span class="cp">import</span> <span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">Ghdl_Main</span><span class="p">,</span> <span class="s">&quot;ghdl_main&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Don’t forget to list the object file(s) of this entry point and other foreign sources, as per <a class="reference internal" href="linking.html#linking-with-foreign-object-files"><span class="std std-ref">Linking foreign object files to GHDL</span></a>.</p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ghdl_main</span></code> function must be called once, since reseting/restarting the simulation runtime is not supported yet. A workaround is to build the simulation as a shared object and load the <code class="docutils literal notranslate"><span class="pre">ghdl_main</span></code> symbol from it (see <a class="reference internal" href="examples/shared.html#cosim-vhpidirect-examples-shared-shghdl"><span class="std std-ref">shghdl</span></a>).</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Immitating the run time flags, such as <code class="docutils literal notranslate"><span class="pre">-gDEPTH=12</span></code> from <a class="reference external" href="https://ghdl.github.io/ghdl/using/Simulation.html#cmdoption-ghdl-gGENERIC" title="(in GHDL v1.0-dev)"><code class="xref std std-option docutils literal notranslate"><span class="pre">-gGENERIC</span></code></a>, requires the <code class="docutils literal notranslate"><span class="pre">argv</span></code> to have the executable’s path at index 0, effectively shifting all other indicies along by 1. This can be taken from the 0 index of the <code class="docutils literal notranslate"><span class="pre">argv</span></code> passed to <code class="docutils literal notranslate"><span class="pre">main()</span></code>, or (not suggested, despite a lack of consequences) left empty/null.</p>
+<p>Since <code class="docutils literal notranslate"><span class="pre">ghdl_main</span></code> is the entrypoint to the design (GRT runtime), the supported CLI options are the ones shown in <a class="reference external" href="https://ghdl.github.io/ghdl/using/Simulation.html#using-simulation" title="(in GHDL v1.0-dev)"><span>Simulation (runtime)</span></a>. Options for analysis/elaboration are not required and will NOT work. See <a class="reference external" href="https://ghdl.github.io/ghdl/using/InvokingGHDL.html#cmdoption-ghdl-r" title="(in GHDL v1.0-dev)"><code class="xref std std-option docutils literal notranslate"><span class="pre">-r</span></code></a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linking.html" class="btn btn-neutral float-right" title="Linking object files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="declarations.html" class="btn btn-neutral float-left" title="Type declarations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Tristan Gingold and contributors
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
